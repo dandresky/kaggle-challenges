@@ -1,2 +1,5 @@
-# kaggle-challenges
-Source code and data for Kaggle challenges I have participated in
+## Kaggle Challenges
+
+The kaggle-challenges repository contains source code and data for Kaggle challenges I have participated in.
+
+- [Titanic](titanic/README.md)
