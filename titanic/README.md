@@ -8,6 +8,9 @@ From the Kaggle site:
 
 "In this challenge, we ask you to complete the analysis of what sorts of people were likely to survive. In particular, we ask you to apply the tools of machine learning to predict which passengers survived the tragedy."
 
-## Approach
+## Source Code and Data
 
-I use a Jupyter notebook to analyze the data and experiment with feature engineering. In parallel I develop python files to manipulate the data and develop models. I experiment with the following techniques and use k-fold cross-validation to evaluate and select the best performing model.
+- [titanic.ipynb](titanic.ipynb) is a Jupyter notebook with all of my notes and analysis regarding the data set.
+- [src/titanic.py](src/titanic.py) is the main Python script file that launches all data processing and modeling. It includes scripts to read in both the training and test data sets, make modifications identified in the Jupyter notebook, and start the modeling and cross-validation process.    
+- [src/model_parameters.py](src/model_parameters.py) contains functions that construct parameter permutation directories for each type of model evaluated. These dictionaries are fed to the sklearn GridSearchCV object which is used to find the optimal parameters for the model under test.
+- [src/cross_val.py](serc/cross_val.py) contains functions to implement GridSearchCV and other cross validation methods as well as functions to score and report on results. 
