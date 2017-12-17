@@ -13,4 +13,8 @@ From the Kaggle site:
 - [titanic.ipynb](titanic.ipynb) is a Jupyter notebook with all of my notes and analysis regarding the data set.
 - [src/titanic.py](src/titanic.py) is the main Python script file that launches all data processing and modeling. It includes scripts to read in both the training and test data sets, make modifications identified in the Jupyter notebook, and start the modeling and cross-validation process.    
 - [src/model_parameters.py](src/model_parameters.py) contains functions that construct parameter permutation directories for each type of model evaluated. These dictionaries are fed to the sklearn GridSearchCV object which is used to find the optimal parameters for the model under test.
-- [src/cross_val.py](serc/cross_val.py) contains functions to implement GridSearchCV and other cross validation methods as well as functions to score and report on results. 
+- [src/cross_val.py](serc/cross_val.py) contains functions to implement GridSearchCV and other cross validation methods as well as functions to score and report on results.
+
+## Results
+
+First submission was used a Random Forest Classifier and scored 0.77033 (placed 6254 out of 9814 submissions). Next submission will be based on Neural Net as practice for my Galvanize capstone project.

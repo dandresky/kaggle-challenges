@@ -13,14 +13,25 @@ from sklearn.svm import SVC
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
-from sklearn.neural_network import MLPClassifier
+
+# constant definitions
+RANDOM_FOREST = 'rf'
+SUPPORT_VECTOR_MACHINE = 'svm'
+K_NEAREST = 'knn'
+LOGISTIC_REGRESSION = 'lr'
+DECISION_TREE = 'dt'
+GRADIENT_BOOSTING = 'gbc'
+ADA_BOOST = 'ada'
+
+VERBOSE_FALSE = False
+VERBOSE_TRUE = True
 
 def get_rf_parameters():
     ''' Random Forest Parameters
     '''
-    param = {"n_estimators": [300, 500, 700],
+    param = {"n_estimators": [20, 30, 40],
              "criterion": ['gini','entropy'],  # 'gini', 'entropy'
-             "max_features": ['sqrt', 'log2', None],    # 'sqrt', 'log2', None, int, float
+             "max_features": ['auto'],    # 'sqrt', 'log2', None, int, float
              "max_depth": [None],   # None or int
              "min_samples_split": [2],  # int or float (percent)
              "min_samples_leaf": [1],   # int or float (percent)
@@ -31,7 +42,7 @@ def get_rf_parameters():
              "oob_score": [False],  # True False
              "n_jobs": [-1],    # int, -1 means use all available cores
              "random_state": [39],  # int (seed) or None
-             "verbose": [0],    # int 0 = no, 1 = yes, do ints increase verbosity?
+             "verbose": [VERBOSE_FALSE],    # int 0 = no, 1 = yes, do ints increase verbosity?
              "warm_start": [False], # True (add trees to previous) False (start over)
              "class_weight": [None] # None (equal weights to all classes) or dict of weights
              }
@@ -63,8 +74,8 @@ def get_svm_parameters():
              'shrinking': [True],   # boolean
              'tol': [0.001],    # float
              'cache_size': [200],   # float (kernel cache im MB)
-             'class_weight': [None],    # dict of class weights
-             'verbose': [False],    # boolean
+             "class_weight": [None, 'balanced'],    #  None or balanced
+             'verbose': [VERBOSE_FALSE],    # boolean
              'max_iter': [-1],  # int, -1 means no limit
              'decision_function_shape': ['ovr'],    # 'ovo', 'ovr'
              "random_state": [39]  # int (seed) or None
@@ -75,118 +86,82 @@ def get_svm_parameters():
 def get_knn_parameters():
     ''' KNN Parameters
     '''
-    knn_parameters = {'n_neighbors': [10, 15, 20],  # int
-                      'weights': ['distance', 'uniform'],   #'distance', 'uniform'
-                      'algorithm': ['auto'],  # auto, ball_tree, kd_tree, brute
-                      'leaf_size': [30],    # int
-                      'p': [2], # int (power metric for minkowski)
-                      'metric': ['minkowski'],  # minkowski or callable
-                      'n_jobs': [-1]    # int, -1 means use all available cores
-                      }
+    param = {'n_neighbors': [10, 15, 20],  # int
+             'weights': ['distance', 'uniform'],   #'distance', 'uniform'
+             'algorithm': ['auto'],  # auto, ball_tree, kd_tree, brute
+             'leaf_size': [30],    # int
+             'p': [2], # int (power metric for minkowski)
+             'metric': ['minkowski'],  # minkowski or callable
+             'n_jobs': [-1]    # int, -1 means use all available cores
+             }
     model = KNeighborsClassifier()
-    return (model, knn_parameters)
+    return (model, param)
 
 def get_lr_parameters():
-    ''' Logistic Regression model parameters to choose from
-    penalty=’l2’,
-    dual=False,
-    tol=0.0001,
-    C=1.0,
-    fit_intercept=True,
-    intercept_scaling=1,
-    class_weight=None,
-    random_state=None,
-    solver=’liblinear’,
-    max_iter=100,
-    multi_class=’ovr’,
-    verbose=0,
-    warm_start=False,
-    n_jobs=1
+    ''' Logistic Regression parameters
     '''
-    lr_parameters = {"penalty": ['l1', 'l2'],
-                     "C": [1,2, 3]}
+    param = {"penalty": ['l2'],   # l1 or l2
+             "dual": [False],   # sklearn prefers False when samples > features
+             "tol": [0.0001],   # floatt (tolerance for stopping criteria)
+             "C": [0.25, 0.5, 0.75, 1.0],   # float (Inverse of regularization strength, smaller value means high reg)
+             "fit_intercept": [True, False],
+             "intercept_scaling": [1,2,3,4],  # float (Useful only when the solver ‘liblinear’ is used and self.fit_intercept is set to True)
+             "class_weight": [None, 'balanced'],    #  None or balanced
+             "random_state": [39],  # int (seed) or None
+             "solver": ['liblinear', 'lbfgs', 'newton-cg'],   # ‘newton-cg’, ‘lbfgs’, ‘liblinear’, ‘sag’, ‘saga’
+             "max_iter": [50, 100], # Useful only for the newton-cg, sag and lbfgs solvers
+             "multi_class": ['ovr'],    # str, {‘ovr’, ‘multinomial’}, default: ‘ovr’
+             "verbose": [VERBOSE_FALSE],
+             "warm_start": [False], # True (build on previous results) False (start over)
+             "n_jobs": [1]  # int (Number of CPU cores used when parallelizing over classes if multi_class=’ovr’)
+             }
     model = LogisticRegression()
-    return (model, lr_parameters)
+    return (model, param)
 
 def get_dt_parameters():
-    ''' Decision Tree parameters to choose from
-    criterion=’gini’,
-    splitter=’best’,
-    max_depth=None,
-    min_samples_split=2,
-    min_samples_leaf=1,
-    min_weight_fraction_leaf=0.0,
-    max_features=None,
-    random_state=None,
-    max_leaf_nodes=None,
-    min_impurity_decrease=0.0,
-    min_impurity_split=None,
-    class_weight=None,
-    presort=False
+    ''' Decision Tree Classifier parameters
     '''
-    dt_parameters = {"splitter": ['best', 'random'],
-                     "criterion": ['gini', 'entropy']}
+    param = {'criterion': ['gini','entropy'],  # gini or entropy
+             'splitter': ['best', 'random'],    # best or random
+             'max_depth': [None],  # int or None
+             'min_samples_split': [2,4,6],  # minimum number of samples required to split an internal node
+             'min_samples_leaf': [1],   # minimum number of samples required to be at a leaf node
+             'min_weight_fraction_leaf': [0.0], # minimum weighted fraction of the sum total of weights
+             'max_features': [None],    # number of features to consider when looking for the best split
+             'random_state': [39],  # int (seed) or None
+             'max_leaf_nodes': [None],  # int or None
+             'min_impurity_decrease': [0.0],    # A node will be split if this split induces a decrease of the impurity greater than or equal to this value
+             'min_impurity_split': [None],  # Threshold for early stopping in tree growth
+             "class_weight": [None, 'balanced'],    #  None or balanced
+             'presort': [False, True] # presort the data to speed up the finding of best splits in fitting
+             }
     model = DecisionTreeClassifier()
-    return (model, dt_parameters)
-
-def get_mlp_parameters():
-    ''' MLP parameters to choose from
-    hidden_layer_sizes=(100, ),
-    activation=’relu’,
-    solver=’adam’,
-    alpha=0.0001,
-    batch_size=’auto’,
-    learning_rate=’constant’,
-    learning_rate_init=0.001,
-    power_t=0.5,
-    max_iter=200,
-    shuffle=True,
-    random_state=None,
-    tol=0.0001,
-    verbose=False,
-    warm_start=False,
-    momentum=0.9,
-    nesterovs_momentum=True,
-    early_stopping=False,
-    validation_fraction=0.1,
-    beta_1=0.9,
-    beta_2=0.999,
-    epsilon=1e-08
-    '''
-    mlp_parameters = {"hidden_layer_sizes": [(30,), (40,)],
-                      "activation": ['tanh', 'relu'],
-                      "solver": ['sgd'],
-                      "alpha": [0.0005, 0.001]}
-    model = MLPClassifier()
-    return (model, mlp_parameters)
+    return (model, param)
 
 def get_gbc_parameters():
+    ''' Gradient Boosting parameters
     '''
-    loss=’deviance’,
-    learning_rate=0.1,
-    n_estimators=100,
-    subsample=1.0,
-    criterion=’friedman_mse’,
-    min_samples_split=2,
-    min_samples_leaf=1,
-    min_weight_fraction_leaf=0.0,
-    max_depth=3,
-    min_impurity_decrease=0.0,
-    min_impurity_split=None,
-    init=None,
-    random_state=None,
-    max_features=None,
-    verbose=0,
-    max_leaf_nodes=None,
-    warm_start=False,
-    presort=’auto’
-    '''
-    gbc_parameters = {"n_estimators": [250, 300],
-                      "learning_rate": [0.1,0.05,0.15],
-                      'max_depth': [2,3,4],
-                      'max_features': ['auto', 'log2']}
+    param = {'loss': ['deviance', 'exponential'], # deviance or exponential (loss function to be optimized)
+             'learning_rate': [0.1,0.15,0.20],    # learning rate shrinks the contribution of each tree
+             'n_estimators': [100,150,200,250],    # The number of boosting stages to perform
+             'max_depth': [2,3], # limits the number of nodes in the tree
+             'criterion': ['friedman_mse', 'mse', 'mae'],   # friedman_mse, mse, mae
+             'min_samples_split': [2], # minimum number of samples required to split an internal node
+             'min_samples_leaf': [2], # minimum number of samples required to be at a leaf node
+             'min_weight_fraction_leaf': [0.0],    # minimum weighted fraction of the sum total of weights
+             'subsample': [1.0],   #  fraction of samples to be used for fitting the individual base learners
+             'max_features': ['sqrt', 'log2', None], # int, sqrt, log2, None
+             'max_leaf_nodes': [None],
+             'min_impurity_split': [None], #
+             'min_impurity_decrease': [0.0],   #
+             'init': [None],   # estimator object that is used to compute the initial predictions
+             'verbose': [VERBOSE_FALSE],
+             'warm_start': [False], # True (build on previous results) False (start over)
+             'random_state': [39],  # int (seed) or None
+             'presort': ['auto'] # bool or 'auto' - presort the data to speed up the finding of best splits in fitting
+             }
     model = GradientBoostingClassifier()
-    return (model, gbc_parameters)
+    return (model, param)
 
 def get_model_parameters(desired_estimators=['rf','knn','gbc']):
     '''
@@ -194,20 +169,18 @@ def get_model_parameters(desired_estimators=['rf','knn','gbc']):
     model/parameter tuples
     '''
     parameter_dict = {}
-    if 'rf' in desired_estimators:
-        parameter_dict.update({"rf": get_rf_parameters()})
-    if 'svm' in desired_estimators:
-        parameter_dict.update({"svm": get_svm_parameters()})
-    if 'knn' in desired_estimators:
-        parameter_dict.update({"knn": get_knn_parameters()})
-    if 'lr' in desired_estimators:
-        parameter_dict.update({"lr": get_lr_parameters()})
-    if 'dt' in desired_estimators:
-        parameter_dict.update({"dt": get_dt_parameters()})
-    if 'mlp' in desired_estimators:
-        parameter_dict.update({"mlp": get_mlp_parameters()})
-    if 'gbc' in desired_estimators:
-        parameter_dict.update({"gbc": get_gbc_parameters()})
-    if 'ada' in desired_estimators:
-        parameter_dict.update({'ada': get_ada_parameters()})
+    if RANDOM_FOREST in desired_estimators:
+        parameter_dict.update({RANDOM_FOREST: get_rf_parameters()})
+    if SUPPORT_VECTOR_MACHINE in desired_estimators:
+        parameter_dict.update({SUPPORT_VECTOR_MACHINE: get_svm_parameters()})
+    if K_NEAREST in desired_estimators:
+        parameter_dict.update({K_NEAREST: get_knn_parameters()})
+    if LOGISTIC_REGRESSION in desired_estimators:
+        parameter_dict.update({LOGISTIC_REGRESSION: get_lr_parameters()})
+    if DECISION_TREE in desired_estimators:
+        parameter_dict.update({DECISION_TREE: get_dt_parameters()})
+    if GRADIENT_BOOSTING in desired_estimators:
+        parameter_dict.update({GRADIENT_BOOSTING: get_gbc_parameters()})
+    if ADA_BOOST in desired_estimators:
+        parameter_dict.update({ADA_BOOST: get_ada_parameters()})
     return parameter_dict

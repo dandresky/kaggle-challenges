@@ -2,6 +2,14 @@ import pandas as pd
 import model_parameters as parameters
 import cross_val as cv
 
+from model_parameters import RANDOM_FOREST
+from model_parameters import SUPPORT_VECTOR_MACHINE
+from model_parameters import K_NEAREST
+from model_parameters import LOGISTIC_REGRESSION
+from model_parameters import DECISION_TREE
+from model_parameters import GRADIENT_BOOSTING
+from model_parameters import ADA_BOOST
+
 
 def get_data(train_filename, test_filename):
     train_df = pd.read_csv(train_filename)
@@ -42,22 +50,41 @@ def main():
     test_filename = '../data/test.csv'
     train_df, test_df = get_data(train_filename, test_filename)
     # clean the data (see jupyter notebook for analysis)
-    train_df = clean_data(train_df)
-    test_df = clean_data(test_df)
+    train_df_cln = clean_data(train_df)
+    # the test data has a missing fare value. The 50th percentile of the fare
+    # training data is $14.45 so that is what will be assigned to the missing
+    # value
+    test_df.loc[test_df.Fare.isnull(), 'Fare'] = 14.45
+    test_df_cln = clean_data(test_df)
     # create the training and test data sets for regression. K-Fold splits for
     # cross validation will be handled in functions specific to each classifier
-    X_trn = train_df.drop("Survived", axis=1)
-    print(X_trn.info())
-    y_trn = train_df["Survived"]
-    X_tst = test_df
-    # get the parameters and models for the desired estimators
-    model_parameters = parameters.get_model_parameters(desired_estimators=['knn'])
-    best_estimators = cv.fit_models(model_parameters, X_trn, y_trn)
-    for model_name, gs in best_estimators.items():
-        print("{} has f1 score of {}".format(model_name, gs.best_score_))
-        print("{} best parameters: {}".format(model_name, gs.best_params_))
-        #print("{} CV results: {}".format(model_name, gs.cv_results_))
-    pass
+    X_trn = train_df_cln.drop("Survived", axis=1)
+    print("\nEngineered Training Data Set (see Jupyter Notebook)\n", X_trn.head(10))
+    print("\n", X_trn.describe())
+    y_trn = train_df_cln["Survived"]
+    print("\n", y_trn.head(10))
+    X_tst = test_df_cln
+    print("\nEngineered Test Data Set (see Jupyter Notebook)\n", X_tst)
+    # Perform model evaluation using sklearns GridSearchCV, first request dictionary
+    # of parameter permutations
+    # print("\n\n\nModel under test: ", GRADIENT_BOOSTING, "\n")
+    # model_parameters = parameters.get_model_parameters(desired_estimators=[GRADIENT_BOOSTING])
+    # best_estimators = cv.fit_models(model_parameters, X_trn, y_trn)
+    # for model_name, gs in best_estimators.items():
+    #     print("\n{} has f1 score of {}".format(model_name, gs.best_score_))
+    #     print("\n{} best parameters: {}".format(model_name, gs.best_params_))
+    #     #print("{} CV results: {}".format(model_name, gs.cv_results_))
+    # pass
+    # Alternatively, perform model evaluations one at a time with fixed parameters
+    print("\n\n\nModel under test: ", RANDOM_FOREST, "\n")
+    model = cv.eval_model(RANDOM_FOREST, X_trn, y_trn, splits=5)
+    # compute predictions for test data and prepare submission file
+    Y_pred = model.predict(X_tst)
+    prediction_df = pd.DataFrame({
+        "PassengerId": test_df["PassengerId"],
+        "Survived": Y_pred
+    })
+    prediction_df.to_csv('../output/submission.csv', index=False)
 
 
 if __name__ == '__main__':
