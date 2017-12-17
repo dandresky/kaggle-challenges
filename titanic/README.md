@@ -17,4 +17,4 @@ From the Kaggle site:
 
 ## Results
 
-First submission was used a Random Forest Classifier and scored 0.77033 (placed 6254 out of 9814 submissions). Next submission will be based on Neural Net as practice for my Galvanize capstone project.
+First submission used a Random Forest Classifier and scored 0.77033 (placed 6254 out of 9814 submissions). Next submission will be based on Neural Net as practice for my Galvanize capstone project.
