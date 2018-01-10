@@ -79,7 +79,7 @@ model = Model(inputs=base_model.input, outputs=top_model(base_model.output))
 
 # set the first 25 layers (up to the last conv block)
 # to non-trainable (weights will not be updated)
-for layer in model.layers[:25]:
+for layer in model.layers[:15]:
     layer.trainable = False
 
 # compile the model with a SGD/momentum optimizer
@@ -122,10 +122,11 @@ start_time = dt.datetime.now()
 # fine-tune the model
 model.fit_generator(
     train_generator,
-    samples_per_epoch=nb_train_samples,
+    steps_per_epoch=nb_train_samples // batch_size,
     epochs=epochs,
     validation_data=validation_generator,
-    nb_val_samples=nb_validation_samples)
+    validation_steps=nb_validation_samples // batch_size,
+    verbose=2)
 
 stop_time = dt.datetime.now()
 print("Elapsed time for fitting = ", (stop_time - start_time).total_seconds(), "s.")
