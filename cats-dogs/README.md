@@ -10,8 +10,8 @@ This challenges provides 25k training images (12.5k dogs and 12.5k cats) and 12.
 
 The following is an evolving list of objectives for this repo.
 
-- Implement the Keras 'little data' example to play around with the process of using a pretained model.
--
+- Implement the Keras 'little data' example to play around with the process of using a pretrained model.
+- Get a baseline using the model developed for my capstone
 
 ## Source Code and Data
 
@@ -23,6 +23,7 @@ Files implementing the Keras 'little data' example ([Classification using very l
 
 Files implementing my solution to the full dataset
 
+- [src/cnn_model_v1.py](src/cnn_model_v1.py) - a shallow model copied from model used in capstone project.
 - [src/train_test_split.py](src/train_test_split.py) - creates a train test split of files by randomly holding out 2.5k dog images and 2.5k cat images.
 
 ## Results
