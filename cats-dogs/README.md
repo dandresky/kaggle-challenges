@@ -14,4 +14,4 @@ This challenge was closed in 2014 so I am not submitting my results. However, I 
 
 - cnn_model_v1 obtains an accuracy of ~80% which was state of the art when the challenge was originally launched.
 - cnn_model_v2 obtains an accuracy of ~90%
-- cnn_model_v3 otains and accuracy of ?
+- cnn_model_v3 obtains an accuracy of ~94%
