@@ -2,10 +2,11 @@
 Creates a train test split of files by randomly holding out 2.5k dog images and
 2.5k cat images. Only need to call this once
 Original training dataset downloaded from Kaggle:
-    ../../kaggle-data/cats-dogs/original-train-data/
+    ../../../kaggle-data/cats-dogs/original-train-data/
 New data paths:
-    ../../kaggle-data/cats-dogs/train/
-    ../../kaggle-data/cats-dogs/test/
+    ../../../kaggle-data/cats-dogs/train/
+    ../../../kaggle-data/cats-dogs/test/
+Paths are set so that data is not included github repo.
 '''
 import logging
 from os import listdir
@@ -14,9 +15,9 @@ from os.path import isfile, join
 import random
 from random import shuffle
 
-ORIGINAL_DATA_PATH = '../../kaggle-data/cats-dogs/original-train-data/'
-TRAIN_DATA_PATH = '../../kaggle-data/cats-dogs/train/'
-TEST_DATA_PATH = '../../kaggle-data/cats-dogs/test/'
+ORIGINAL_DATA_PATH = '../../../kaggle-data/cats-dogs/original-train-data/'
+TRAIN_DATA_PATH = '../../../kaggle-data/cats-dogs/train/'
+TEST_DATA_PATH = '../../../kaggle-data/cats-dogs/test/'
 
 
 def get_file_name_lists():
