@@ -24,7 +24,8 @@ Files implementing the Keras 'little data' example ([Classification using very l
 Files implementing my solution to the full dataset
 
 - [src/cnn_model_v1.py](src/cnn_model_v1.py) - a shallow model copied from model used in capstone project.
-- [src/train_test_split.py](src/train_test_split.py) - creates a train test split of files by randomly holding out 2.5k dog images and 2.5k cat images.
+- [src/train_test_split.py](src/train_test_split.py) - creates a train test split of files by randomly holding out 2.5k dog images and 2.5k cat images. This called just once before any pre-processing or before the model can be trained.
+- [src/process_images.py](src/process_images.py) - resize images, convert to numpy arrays, and save to disk. This called just once (or after any change to pre-processing) before the model can be trained.
 
 ## Results
 

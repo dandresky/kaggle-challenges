@@ -12,7 +12,7 @@ import random
 import tensorflow as tf
 
 BATCH_SIZE = 32
-EPOCHS = 40
+EPOCHS = 5
 OPTIMIZER = 'sgd'
 
 
@@ -113,7 +113,7 @@ def get_datagenerators_v1(X_train, y_train, X_test, y_test):
 def get_data():
     '''
     Images have already been screened, resized, and converted to numpy arrays.
-    They are are stored in ../../dsi-capstone-data/
+    They are are stored in ../../../kaggle-data/cats-dogs/
         processed_training_images.npy
         processed_test_images.npy
         training_labels.npy
@@ -125,10 +125,10 @@ def get_data():
     '''
     logging.info('Loading numpy arrays ...')
     print('\nLoading numpy arrays ... ...')
-    X_train = np.load('../../dsi-capstone-data/processed_training_images.npy')
-    X_test = np.load('../../dsi-capstone-data/processed_test_images.npy')
-    y_train = np.load('../../dsi-capstone-data/training_labels.npy')
-    y_test = np.load('../../dsi-capstone-data/test_labels.npy')
+    X_train = np.load('../../../kaggle-data/cats-dogs/processed_training_images.npy')
+    X_test = np.load('../../../kaggle-data/cats-dogs/processed_test_images.npy')
+    y_train = np.load('../../../kaggle-data/cats-dogs/training_labels.npy')
+    y_test = np.load('../../../kaggle-data/cats-dogs/test_labels.npy')
 
     logging.info('Trimming data to integer number of batches ...')
     print("Trimming data to integer number of batches ...")
@@ -154,11 +154,11 @@ def main():
 
     # begin a logging function to record events
     try:
-        os.remove('model_A.log')    # delete the existing file to start new
+        os.remove('cnn_model_v1.log')    # delete the existing file to start new
     except OSError:
         pass
-    logging.basicConfig(filename='model_A.log',level=logging.DEBUG)
-    logging.info('Begin training model A ...')
+    logging.basicConfig(filename='cnn_model_v1.log',level=logging.DEBUG)
+    logging.info('Begin training CNN Model (v1) ...')
     logging.info("  Batch size = %s" % BATCH_SIZE)
     logging.info("  Epochs = %s" % EPOCHS)
     logging.info("  Optimizer = %s" % OPTIMIZER)
@@ -167,12 +167,9 @@ def main():
     # read pre-processed data and trim to integer number of batches
     X_train, y_train, X_test, y_test = get_data()
 
-    # convert classes to categorical if trying to count items in a bin
-    if NUM_CLASSES > 0:
-        print(y_train)
-        y_train = to_categorical(y_train, NUM_CLASSES)
-        print(y_train)
-        y_test = to_categorical(y_test, NUM_CLASSES)
+    # convert classes to categorical
+    # y_train = to_categorical(y_train, 2)
+    # y_test = to_categorical(y_test, 2)
 
     # data generators are instructions to Keras for further processing of the
     # image data (in batches) before training on the image.
@@ -220,17 +217,17 @@ def main():
 
     print("Predictions: ", pred)
     print("Actual: ", y_test)
-    np.save('../../dsi-capstone-data/model_A_predictions.npy', pred)
+    np.save('../../../kaggle-data/cats-dogs/cnn_model_v1_predictions.npy', pred)
 
     logging.info("Saving model ...")
     print("Saving model ...")
-    model.save('../../dsi-capstone-data/model_A.h5')
+    model.save('../../../kaggle-data/cats-dogs/cnn_model_v1.h5')
 
     stop_time = dt.datetime.now()
     print("Scanning and shuffling took ", (stop_time - start_time).total_seconds(), "s.\n")
     logging.info("Training complete. Elapsed time = %.0fs", (stop_time - start_time).total_seconds())
 
-    pickle.dump(hist.history, open("../../dsi-capstone-data/model_A_history.pkl", "wb"))
+    pickle.dump(hist.history, open("../../../kaggle-data/cats-dogs/cnn_model_v1.pkl", "wb"))
 
 
 
