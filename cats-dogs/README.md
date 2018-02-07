@@ -29,6 +29,9 @@ Files implementing my solution to the full dataset
 
 ## Results
 
-- cnn_model_v1 obtains an accuracy of ~80% which was state of the art when the challenge was originally launched.
-- cnn_model_v2 obtains an accuracy of ~90%
-- cnn_model_v3 obtains an accuracy of ~94%
+(state of the art when challenge was originally launched was ~80%)
+
+- cnn_model_v1 - (32x64x128x256)
+    - ~80.2% (placed 90 out of 215) - 20 epochs - SGD opt - Relu act - loss='binary_crossentropy'
+- cnn_model_v2 obtains an accuracy of ~xx%
+- cnn_model_v3 obtains an accuracy of ~xx%
