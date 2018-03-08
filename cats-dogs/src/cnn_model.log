@@ -1,0 +1,30 @@
+INFO:root:Begin training CNN Model v1 ...
+INFO:root:  Batch size = 32
+INFO:root:  Epochs = 2
+INFO:root:  Optimizer = sgd
+INFO:root:Loading numpy arrays ...
+INFO:root:Trimming data to integer number of batches ...
+INFO:root:  X_train samples = 20000
+INFO:root:  y_train samples = 20000
+INFO:root:  X_test samples = 5000
+INFO:root:  y_test samples = 5000
+INFO:root:Begin training CNN Model v1 ...
+INFO:root:  Batch size = 32
+INFO:root:  Epochs = 2
+INFO:root:  Optimizer = sgd
+INFO:root:Loading numpy arrays ...
+INFO:root:Trimming data to integer number of batches ...
+INFO:root:  X_train samples = 20000
+INFO:root:  y_train samples = 20000
+INFO:root:  X_test samples = 5000
+INFO:root:  y_test samples = 5000
+INFO:root:Begin training CNN Model v1 ...
+INFO:root:  Batch size = 32
+INFO:root:  Epochs = 2
+INFO:root:  Optimizer = sgd
+INFO:root:Loading numpy arrays ...
+INFO:root:Trimming data to integer number of batches ...
+INFO:root:  X_train samples = 20000
+INFO:root:  y_train samples = 20000
+INFO:root:  X_test samples = 5000
+INFO:root:  y_test samples = 5000

@@ -15,15 +15,18 @@ The following is an evolving list of objectives for this repo.
 
 ## Source Code and Data
 
-Files implementing the Keras 'little data' example ([Classification using very little data](https://blog.keras.io/building-powerful-image-classification-models-using-very-little-data.html))
+Files implementing the Keras 'little data' example ([Classification using very little data](https://blog.keras.io/building-powerful-image-classification-models-using-very-little-data.html)). I keep these for experimental and historical purposes.
 
-- [src/cnn_model_v1.py](src/cnn_model_v1.py) is a shallow net with just three convolution and pooling layers trained on 2000 images (1000 cats and 1000 dogs) and obtains a validation accuracy of ~80%. It is based on a Keras blog with minor modifications.    
-- [src/cnn_model_v2.py](src/cnn_model_v2.py) is the first of two steps to create a deep learning net capable of training on a small amount of data. Its purpose is to train the fully connected layer on top of a pre-trained VGG16 net. Weight are saved for use in the next script.
-- [src/cnn_model_v3.py](src/cnn_model_v3.py) combines FC layer weights obtained in the previous script with a fully trained VGG16 net and fine tunes the last stage of the net.
+- [src/little_data_model_v1.py](src/little_data_model_v1.py) is a shallow net with just three convolution and pooling layers trained on 2000 images (1000 cats and 1000 dogs) and obtains a validation accuracy of ~80%. It is based on a Keras blog with minor modifications.    
+- [src/little_data_model_v2.py](src/little_data_model_v2.py) is the first of two steps to create a deep learning net capable of training on a small amount of data. Its purpose is to train the fully connected layer on top of a pre-trained VGG16 net. Weight are saved for use in the next script.
+- [src/little_data_model_v3.py](src/little_data_model_v3.py) combines FC layer weights obtained in the previous script with a fully trained VGG16 net and fine tunes the last stage of the net.
+- [src/little_data_model_v4.py](src/little_data_model_v4.py) a copy of v3 but uses flow(X, y) instead of flow_from_directory and implements a separate rezize function.
 
-Files implementing my solution to the full dataset
+Files implementing my solution to the full dataset.
 
-- [src/cnn_model_v1.py](src/cnn_model_v1.py) - a shallow model copied from model used in capstone project.
+- [src/main.py](src/main.py) - This is the main script to be called when training a model. Currently has several constants to set parameters such as model version, batch size, number of epochs, etc. May move these to command line arguments later.
+- [src/cnn_model.py](src/cnn_model.py) - This script contains functions to build various model versions.
+- [src/data_generator.py](src/data_generator.py) - This script contains various versions of data generators for the images.
 - [src/train_test_split.py](src/train_test_split.py) - creates a train test split of files by randomly holding out 2.5k dog images and 2.5k cat images. This called just once before any pre-processing or before the model can be trained.
 - [src/process_images.py](src/process_images.py) - resize images, convert to numpy arrays, and save to disk. This called just once (or after any change to pre-processing) before the model can be trained.
 

@@ -14,17 +14,15 @@ from resizeimage import resizeimage
 import sys
 import tensorflow as tf
 
-
 TRAIN_DATA_PATH = '../../../kaggle-data/cats-dogs/train/'
 TEST_DATA_PATH = '../../../kaggle-data/cats-dogs/test/'
 TARGET_SIZE = (224,224)
 
 def extract_labels(train_files, test_files):
     '''
-    Image filenames begin with the 'cat' or 'dog'. Use this to extract labels.
+    Image filenames begin with 'cat' or 'dog'. Use this to extract labels.
     Model is expected to be a binary classifier so cats = 0 and dogs = 1
     '''
-
     logging.info('Extracting labels ...')
     print('\nExtracting labels ...')
 
