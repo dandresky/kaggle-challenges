@@ -6,9 +6,9 @@ from keras.models import Sequential
 def build_model(version, optimizer, input_shape):
 
     if(version == 1):
-        return build_model_v1(input_shape, optimizer)
+        return build_model_v1(optimizer, input_shape)
     else:
-        return build_model_v1(input_shape, optimizer)
+        return build_model_v1(optimizer, input_shape)
 
 
 def build_model_v1(optimizer, input_shape):
