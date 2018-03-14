@@ -30,11 +30,44 @@ Files implementing my solution to the full dataset.
 - [src/train_test_split.py](src/train_test_split.py) - creates a train test split of files by randomly holding out 2.5k dog images and 2.5k cat images. This called just once before any pre-processing or before the model can be trained.
 - [src/process_images.py](src/process_images.py) - resize images, convert to numpy arrays, and save to disk. This called just once (or after any change to pre-processing) before the model can be trained.
 
-## Results
+# Results
 
 (state of the art when challenge was originally launched was ~80%)
 
-- cnn_model_v1 - (32x64x128x256)
-    - ~80.2% (placed 90 out of 215) - 20 epochs - SGD opt - Relu act - loss='binary_crossentropy'
+### CNN Model V1
+
+- Three convolutional stages followed by a fully connected layer
+    - Stage 1 filters = 32 (3x3)
+    - Stage 2 filters = 64 (3x3)
+    - Stage 3 filters = 128 (3x3)
+    - Fully connected layer filters = 256 (3x3)
+    - All stages included a 2x2 max pooling layer
+    - All stages included a dropout layer with value of 0.125 - larger values were tried with poor performance
+    - Optimizer = SGD
+    - All activation layers use RELU except the final output layer which uses Sigmoid
+    - Loss Function = Binary Crossentropy
+- Results
+    - ~82% (places 89 out of 215)
+    - The following plot shows that the model begins to overfit after approximately 20 epochs  
+
+<p align="center">
+<img src="img/loss_vs_acc_mdl_v1.png" width="650">
+</p>
+
+### CNN Model V2
+
 - cnn_model_v2 obtains an accuracy of ~xx%
 - cnn_model_v3 obtains an accuracy of ~xx%
+
+
+
+
+
+
+
+
+
+
+
+
+end
