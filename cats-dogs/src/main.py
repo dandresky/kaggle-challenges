@@ -9,9 +9,9 @@ import random
 import tensorflow as tf
 
 BATCH_SIZE = 32
-EPOCHS = 40
+EPOCHS = 100
 GENERATOR_VERSION = 1
-MODEL_VERSION = 2
+MODEL_VERSION = 3
 OPTIMIZER = 'sgd'
 
 def get_data():

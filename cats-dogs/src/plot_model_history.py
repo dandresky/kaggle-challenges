@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import pickle
 
 # List of constants that set parameters for each trainining session
-EPOCHS_RUN = 50     # THIS IS THE NUMBER OF EPOCHS
+EPOCHS_RUN = 60     # THIS IS THE NUMBER OF EPOCHS
 PLOT_TITLE = "ACC vs LOSS - "
 
 def plot_metrics(loss, acc, title_append):

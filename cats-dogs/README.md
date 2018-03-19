@@ -56,6 +56,28 @@ Files implementing my solution to the full dataset.
 
 ### CNN Model V2
 
+- Three convolutional stages followed by a fully connected layer
+    - Stage 1 filters = 16 (3x3)
+    - Stage 2 filters = 32 (3x3)
+    - Stage 3 filters = 64 (3x3)
+    - Stage 4 filters = 128 (3x3)
+    - Stage 5 filters = 128 (3x3)
+    - Fully connected layer filters = 128 (3x3)
+    - All stages included a 2x2 max pooling layer
+    - All stages included a dropout layer with value of 0.1 - larger values were tried with poor performance
+    - Optimizer = SGD
+    - All activation layers use RELU except the final output layer which uses Sigmoid
+    - Loss Function = Binary Crossentropy
+- Results
+    - ~87.5% (places 80 out of 215)
+    - The following plot shows that the model begins to overfit after approximately 50 epochs  
+
+<p align="center">
+<img src="img/loss_vs_acc_mdl_v2.png" width="650">
+</p>
+
+### CNN Model V3
+
 - cnn_model_v2 obtains an accuracy of ~xx%
 - cnn_model_v3 obtains an accuracy of ~xx%
 
